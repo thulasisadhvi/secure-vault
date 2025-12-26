@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  # This service handles both the blockchain and the deployment
+  # as defined in our docker/entrypoint.sh script.
+  secure-vault-system:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    # Expose the Hardhat RPC port to your local machine
+    ports:
+      - "8545:8545"
+    # Mount volumes to sync code changes instantly without rebuilding
+    volumes:
+      - ./:/app
+      - /app/node_modules # Prevent host node_modules from overriding container
+    environment:
+      - FORCE_COLOR=1 # Ensures colors show up in your terminal logs
